@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.17.1.54307",
+      "templateHash": "3870835232378443181"
+    }
+  },
+  "parameters": {
+    "sku": {
+      "type": "string",
+      "maxLength": 24,
+      "minLength": 3,
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GLS"
+      ],
+      "metadata": {
+        "description": "Specify SKU"
+      }
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "[concat('storage', uniqueString(resourceGroup().id))]"
+    },
+    "allowBlobPublicAccess": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "location": {
+      "type": "string",
+      "allowedValues": [
+        "North Europe",
+        "West Europe"
+      ]
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('storageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "StorageV2",
+      "sku": {
+        "name": "[parameters('sku')]"
+      },
+      "properties": {
+        "accessTier": "Hot",
+        "allowBlobPublicAccess": "[parameters('allowBlobPublicAccess')]"
+      }
+    }
+  ]
+}
